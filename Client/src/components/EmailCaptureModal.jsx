@@ -63,7 +63,7 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle, redirectUrl }) 
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('https://evencomtnext.onrender./api/verify-otp', {
+      const res = await fetch('https://eventnext.onrender.com/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, eventTitle, location: selectedLocation }),
