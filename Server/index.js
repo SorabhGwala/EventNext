@@ -10,11 +10,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 
-app.use(cors({
-  origin: "celadon-cannoli-dc90e5.netlify.app/",
-  
-  credentials: true,
-}));
+app.use(cors());
 
 
 app.use(bodyParser.json());

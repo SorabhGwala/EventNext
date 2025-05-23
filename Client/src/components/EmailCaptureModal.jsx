@@ -73,7 +73,7 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
       if (!res.ok) throw new Error(data.message || 'OTP verification failed');
 
       toast.success('OTP verified. Redirecting...');
-         navigate('/')
+         window.location.href='/'
     } catch (error) {
       console.error(error);
       toast.error(error.message || 'OTP verification failed');
