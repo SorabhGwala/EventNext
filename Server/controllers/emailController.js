@@ -16,7 +16,7 @@ export const sendOtp = async ({ email, eventTitle, location, otp }) => {
     to: email,
     subject: `Your ticket for ${eventTitle}`,
     html: `<h2>OTP for ticket registration</h2><p style="font-size: 20px; font-weight: bold;">${otp}</p><p>At ${location}</p>.`,
-  };
+  };  
 
   await transporter.sendMail(mailOptions);
 };

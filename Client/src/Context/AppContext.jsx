@@ -432,7 +432,7 @@ export const AppProvider = ({ children }) => {
 
  const getEventById = (id) => {
   return mockEvents.find(event => event.id === id);
-};
+};  
 
  const mockCategories = [
   {

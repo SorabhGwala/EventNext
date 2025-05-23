@@ -24,7 +24,7 @@ const EventDetails = () => {
     .filter(e => e.id !== id && e.category === event?.category)
     .slice(0, 4);
 
-  const redirectUrl = `http://localhost:5173/`;
+  const redirectUrl = `https://eventnext.onrender.com`;
 
   if (!event) {
     return (
