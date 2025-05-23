@@ -24,7 +24,7 @@ const EventDetails = () => {
     .filter(e => e.id !== id && e.category === event?.category)
     .slice(0, 4);
 
-  const redirectUrl = `/`;
+ 
 
   if (!event) {
     return (
@@ -173,7 +173,7 @@ const EventDetails = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         eventTitle={event.title}
-        redirectUrl={redirectUrl}
+       
       />
 
       <Footer />

@@ -16,7 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAppContext } from '@/Context/AppContext';
 
-export const EmailCaptureModal = ({ isOpen, onClose, eventTitle, redirectUrl }) => {
+export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
   const [email, setEmail] = useState('');
   const [optIn, setOptIn] = useState(false);
   const [otp, setOtp] = useState('');
@@ -74,12 +74,8 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle, redirectUrl }) 
 
       toast.success('OTP verified. Redirecting...');
       setTimeout(() => {
-        if (redirectUrl.startsWith('http')) {
-          window.location.href = redirectUrl;
-        } else {
-          navigate('/');
-        }
-      }, 1500);
+      navigate('/'); // Redirects to homepage within React Router
+    }, 1000);
     } catch (error) {
       console.error(error);
       toast.error(error.message || 'OTP verification failed');
