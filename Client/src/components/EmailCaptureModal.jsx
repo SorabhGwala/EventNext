@@ -18,6 +18,7 @@ import { useAppContext } from '@/Context/AppContext';
 
 export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
   const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
   const [optIn, setOptIn] = useState(false);
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState('email');
@@ -28,28 +29,38 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
   const sendOtp = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log(dob)
 
     if (!selectedLocation) {
-      toast.error('Location is not selected');
+      toast.error('Please select a location.');
       setIsSubmitting(false);
+
       return;
     }
 
-
-    const payload = { email, optIn, eventTitle, location: selectedLocation };
-   
+    const payload = {
+      email,
+      dob,
+      optIn,
+      eventTitle,
+      location: selectedLocation,
+    };
 
     try {
       const res = await fetch('https://eventnext.onrender.com/api/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+    
       });
+
 
       if (!res.ok) throw new Error('Failed to send OTP');
 
       toast.success('OTP sent to your email');
       setStep('otp');
+          console.log(dob)
+      
     } catch (error) {
       console.error(error);
       toast.error('Failed to send OTP');
@@ -58,7 +69,7 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
     }
   };
 
-    const verifyOtp = async (e) => {
+  const verifyOtp = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -66,14 +77,20 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
       const res = await fetch('https://eventnext.onrender.com/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, eventTitle, location: selectedLocation }),
+        body: JSON.stringify({
+          email,
+          otp,
+          dob, // ✅ Must include DOB
+          eventTitle,
+          location: selectedLocation,
+        }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'OTP verification failed');
 
       toast.success('OTP verified. Redirecting...');
-         window.location.href='/'
+      window.location.href = '/';
     } catch (error) {
       console.error(error);
       toast.error(error.message || 'OTP verification failed');
@@ -87,16 +104,18 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
       <DialogOverlay className="fixed inset-0 z-50 bg-black/50" />
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-
           <DialogTitle>Get tickets for {eventTitle}</DialogTitle>
           <DialogDescription>
             {step === 'email'
-              ? 'Enter your email to receive a one-time passcode (OTP).'
-              : 'Check your email and enter the OTP to continue.'}
+              ? 'Enter your email and date of birth to receive a one-time passcode (OTP).'
+              : 'Enter the OTP sent to your email to continue.'}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={step === 'email' ? sendOtp : verifyOtp} className="space-y-6 py-4">
+        <form
+          onSubmit={step === 'email' ? sendOtp : verifyOtp}
+          className="space-y-6 py-4"
+        >
           {step === 'email' && (
             <>
               <div className="space-y-2">
@@ -107,6 +126,17 @@ export const EmailCaptureModal = ({ isOpen, onClose, eventTitle }) => {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="dob">Date of Birth</Label>
+                <Input
+                  id="dob"
+                  type="date"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
                   required
                 />
               </div>

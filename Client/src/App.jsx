@@ -14,6 +14,8 @@ const App = () => (
     <Route path="/events/:category" element={<EventsCategoryPage />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
+
+ 
 );
 
 export default App;
